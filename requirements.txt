@@ -1,0 +1,28 @@
+# Core Libraries
+numpy
+pandas
+
+# Machine Learning
+scikit-learn
+
+# Build tools (safe for compatibility)
+cmake
+wheel
+setuptools<70.0.0
+
+# Face Recognition (NO dlib install needed)
+face-recognition
+face-recognition-models
+
+# Database
+supabase
+bcrypt
+
+# QR Code
+segno
+
+# Image Processing
+Pillow
+
+# Web App
+streamlit
