@@ -1,3 +1,6 @@
+# Web App
+streamlit
+
 # Core Libraries
 numpy
 pandas
@@ -24,5 +27,7 @@ segno
 # Image Processing
 Pillow
 
-# Web App
-streamlit
+
+
+librosa
+resemblyzer
