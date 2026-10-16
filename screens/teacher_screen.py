@@ -190,19 +190,22 @@ def teacher_tab_take_attendance():
                 enrolled_res = supabase.table('subject_students').select("*, students(*)").eq('subject_id',selected_subject_id ).execute()
                 enrolled_students = enrolled_res.data
 
+                
                 if not enrolled_students:
                     st.warning('No students enrolled in this course')
                 else:
+                    results, attendance_to_log = [], []
 
-                    results, attendance_to_log  = [], []
-
-                    current_timestamp = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
-
+                    current_timestamp = datetime.now().strftime(
+                        "%Y-%m-%dT%H:%M:%S"
+                    )
 
                     for node in enrolled_students:
                         student = node['students']
-                        sources = all_detected_ids.get(int(student['student_id']), [])
-                        is_present= len(sources) > 0
+                        sources = all_detected_ids.get(
+                            int(student['student_id']), []
+                        )
+                        is_present = len(sources) > 0
 
                         results.append({
                             "Name": student['name'],
@@ -218,7 +221,12 @@ def teacher_tab_take_attendance():
                             'is_present': bool(is_present)
                         })
 
-                attendance_result_dialog(pd.DataFrame(results), attendance_to_log)
+                    attendance_result_dialog(
+                        pd.DataFrame(results),
+                        attendance_to_log
+                    )
+
+
 
     with c3:
         if st.button('Use Voice Attendance', type='primary', width='stretch', icon=':material/mic:'):
@@ -236,7 +244,9 @@ def teacher_tab_take_attendance():
 
 def teacher_tab_manage_subjects():
     teacher_id = st.session_state.teacher_data['teacher_id']
+
     col1, col2 = st.columns(2)
+
     with col1:
         st.markdown(
             "<h2 style='color:black;'>Manage Subjects</h2>",
@@ -247,27 +257,36 @@ def teacher_tab_manage_subjects():
         if st.button('Create New Subject', width='stretch'):
             create_subject_dialog(teacher_id)
 
-
-    # LIST all SUBJECTS
+    
     subjects = get_teacher_subjects(teacher_id)
+
     if subjects:
         for sub in subjects:
             stats = [
                 ("🫂", "Students", sub['total_students']),
                 ("🕰️", "Classes", sub['total_classes']),
             ]
-        def share_btn():
-            if st.button(f"Share Code: {sub['name']}", key=f"share_{sub['subject_code']}", icon=":material/share:"):
-                share_subject_dialog(sub['name'], sub['subject_code'])
-            st.space()
 
-        subject_card(
-            name = sub['name'],
-            code = sub['subject_code'],
-            section = sub['section'],
-            stats=stats,
-            footer_callback=share_btn
-        )
+            def share_btn(
+                name=sub['name'],
+                code=sub['subject_code']
+            ):
+                if st.button(
+                    f"Share Code: {name}",
+                    key=f"share_{code}",
+                    icon=":material/share:"
+                ):
+                    share_subject_dialog(name, code)
+
+                st.space()
+
+            subject_card(
+                name=sub['name'],
+                code=sub['subject_code'],
+                section=sub['section'],
+                stats=stats,
+                footer_callback=share_btn
+            )
     else:
         st.info("NO SUBJECTS FOUND. CREATE ONE ABOVE")
 
