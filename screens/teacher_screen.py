@@ -107,8 +107,9 @@ def teacher_tab_take_attendance():
 
     subjects = get_teacher_subjects(teacher_id)
 
+
     if not subjects:
-            st.markdown(
+        st.markdown(
             """
             <div style="
                 background-color:#FFF3CD;
@@ -121,11 +122,13 @@ def teacher_tab_take_attendance():
             </div>
             """,
             unsafe_allow_html=True
-            )
-    return
+        )
+        return
     
-    subject_options = {f"{s['name']} - {s['subject_code']}": s['subject_id'] for s in subjects}
-
+        subject_options = {
+            f"{s['name']} - {s['subject_code']}": s['subject_id']
+            for s in subjects
+        }
     col1, col2 = st.columns([3,1], vertical_alignment='bottom')
 
     with col1:
