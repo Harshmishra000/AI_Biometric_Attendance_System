@@ -1,5 +1,5 @@
 import streamlit as st
-
+st.write("DEBUG: app.py started")
 def safe_import():
     try:
         from screens.home_screen import home_screen
