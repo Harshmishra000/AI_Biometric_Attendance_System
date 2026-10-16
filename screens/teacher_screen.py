@@ -105,8 +105,8 @@ def teacher_tab_take_attendance():
     if 'attendance_images' not in st.session_state:
         st.session_state.attendance_images = []
 
+    
     subjects = get_teacher_subjects(teacher_id)
-
 
     if not subjects:
         st.markdown(
@@ -124,18 +124,27 @@ def teacher_tab_take_attendance():
             unsafe_allow_html=True
         )
         return
-    
-        subject_options = {
-            f"{s['name']} - {s['subject_code']}": s['subject_id']
-            for s in subjects
-        }
-    col1, col2 = st.columns([3,1], vertical_alignment='bottom')
+
+    subject_options = {
+        f"{s['name']} - {s['subject_code']}": s['subject_id']
+        for s in subjects
+    }
+
+    col1, col2 = st.columns([3, 1], vertical_alignment='bottom')
 
     with col1:
-        selected_subject_label = st.selectbox('Select Subject', options=list(subject_options.keys()))
+        selected_subject_label = st.selectbox(
+            'Select Subject',
+            options=list(subject_options.keys())
+        )
 
     with col2:
-        if st.button('Add Photos', type='primary', icon=':material/photo_prints:', width='stretch'):
+        if st.button(
+            'Add Photos',
+            type='primary',
+            icon=':material/photo_prints:',
+            width='stretch'
+        ):
             add_photos_dialog()
 
     selected_subject_id = subject_options[selected_subject_label]
